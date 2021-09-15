@@ -3,6 +3,7 @@ const { config } = require('dotenv');
 const mongoose = require("mongoose")
 const router = require("./routers/userRouter.js");
 const cookie_parser = require('cookie-parser')
+const handleErrors = require('./middleware/handleErrors');
 
 config();
 
@@ -13,7 +14,10 @@ const url = process.env.URL;
 app.use(express.json());
 app.use(cookie_parser(process.env.SECRET_KEY));
 app.use(express.urlencoded({ extended: true }));
+
 app.use("/api", router);
+
+app.use(handleErrors);
 
 async function start() {
     try {
